@@ -17,17 +17,17 @@
   <p><button onclick="go('/aa11')">Button11</button></p>
   <p><button onclick="go('/aa21')">Button21</button></p>
   <p><button onclick="go('/aa31')">Button31</button></p>
-  <p><button onclick="go('/aa41')">Button41</button></p>
-  <p><button onclick="go('/aa51')">Button51</button></p>
-  <p><button onclick="go('/aa61')">Button61</button></p>
-  <p><button onclick="go('/aa71')">Button71</button></p>
-  <p><button onclick="go('/aa81')">Button81</button></p>
-  <p><button onclick="go('/aa91')">Button91</button></p>
   <p><button onclick="go('/aa101')">Button101</button></p>
+  <p><button onclick="back('/aa101')">Back</button></p>
+
   <script>
     function go(path) {
       console.log(hash.history)
       hash.replace(path)
+    }
+
+    function back() {
+      hash.back();
     }
   </script>
 </body>
