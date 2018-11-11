@@ -9,7 +9,8 @@
 </head>
 
 <body>
-  <p><a href="#a11">button11</a></p>
+  <div id="root">{{message}}</div>
+  <p><a href="#a11">button11--</a></p>
   <p><a href="#a21">button21</a></p>
   <p><a href="#a31">button31</a></p>
   <p><a href="#a41">button41</a></p>
@@ -22,14 +23,15 @@
 
   <script>
     function go(path) {
-      console.log(hash.history)
-      hash.replace(path)
+      // console.log(hash.history)
+      app.ctx.replace(path)
     }
 
     function back() {
-      hash.back();
+      app.ctx.back();
     }
   </script>
-</body>
+  <script src="../build.js"></script>
+<script src="/Users/yanghuimin/hzjWS/bitorjs/bitor/dist/test/build.js"></script></body>
 
 </html>
