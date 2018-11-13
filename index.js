@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import tem from './view/index.vue'
 import Application from "../application/Application";
-import Router from '../router/router';
-let router = new Router()
+// import Router from '../router/router';
+// let router = new Router()
+
+import main from './.classloader';
 Vue.prototype.$bitor = new Application();
 
 new Vue({

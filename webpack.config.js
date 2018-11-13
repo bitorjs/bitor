@@ -42,7 +42,10 @@ module.exports = {
         console.log(files)
       },
       normalize(data){
-        return data;
+        return `
+        module.exports = ${JSON.stringify(data,null, 4)}
+        `
+        
       }
     })
   ],
@@ -58,11 +61,22 @@ module.exports = {
     ignored: [require('path').resolve(__dirname, './dist/**/*.*'), 'node_modules']
   },
   resolve: {
+    // modules:[
+    //   // path.resolve( "./"), 
+    //   path.resolve( "./node_modules"), 
+    //   // path.resolve('../router'),
+    //   // path.resolve('../router/node_modules'),
+    //   // path.resolve('../application'),
+    //   // path.resolve('../application/node_modules'),
+    //   // path.resolve('../HashHistory'),
+    //   // path.resolve('../HashHistory/node_modules'),
+    // ],
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue': 'vue/dist/vue.js'
     }
   },
+  
   module: {
     rules: [{
         test: /\.vue$/,
