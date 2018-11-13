@@ -22,7 +22,29 @@ module.exports = {
     }),
     new webpack.HotModuleReplacementPlugin(),
     new VueLoaderPlugin(),
-    new BitorPlugin()
+    new BitorPlugin({
+      root: process.cwd() + '/app',
+      cachefile: '.classloader',
+      rules:{
+        controller:"controller/**/*.js",
+        view: ['view/**/*.vue','view/**/*.js'],
+      },
+      onAddCallback: function(ns, path){
+        console.log('add', ns, path)
+      },
+      onUnlinkCallback: function(ns, path){
+        console.log('del', ns, path)
+      },
+      onChangeCallback: function(ns){
+        console.log('change', ns)
+      },
+      onCacheChange(files) {
+        console.log(files)
+      },
+      normalize(data){
+        return data;
+      }
+    })
   ],
   devServer: {
     contentBase: path.join(__dirname, 'dist/test'),
