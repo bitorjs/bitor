@@ -2,12 +2,18 @@ import 'reflect-metadata';
 import D from "../decorators";
 import App from '../view/index';
 import Empty from '../view/empty';
+import root from '../view/root';
 
-// @D.namespace('/order')
+@D.namespace('/order')
 class Controller {
   constructor(ctx) {
     this.ctx = ctx;
     this.bug = false;
+  }
+
+  @D.Get('/')
+  index() {
+    this.ctx.render(root)
   }
 
   //get /a11/:id/:age
@@ -17,14 +23,14 @@ class Controller {
   }
 
   //get *
-  @D.Get('/a12/:id/:age')
+  @D.Get('/a21/:id/:age')
   renderEmpty() {
     this.ctx.render(Empty)
   }
 
-  @D.Get('*')
+  @D.Get('(.*)')
   test() {
-    this.ctx.render(Empty)
+    this.ctx.render("Empty")
     console.log(this.debug())
   }
 
