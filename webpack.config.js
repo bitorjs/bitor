@@ -7,7 +7,7 @@ var path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './index.js',
+  entry: './vue-inject.js',
   output: {
     filename: 'build.js',
     path: path.resolve(__dirname, 'dist'),
@@ -72,7 +72,14 @@ module.exports = {
   },
 
   module: {
-    rules: [{
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/, 
+        loader: "babel-loader",
+        // cacheDirectory: true, // for faster rebuild
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
       },
