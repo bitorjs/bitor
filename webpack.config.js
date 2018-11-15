@@ -1,13 +1,12 @@
 const webpack = require('webpack');
 const htmlPlugin = require('html-webpack-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const BitorPlugin = require('../application/webpack-watcher');
 
 var path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './vue-inject/index.js',
+  entry: './app.js',
   output: {
     filename: 'build.js',
     path: path.resolve(__dirname, 'dist'),
@@ -18,7 +17,6 @@ module.exports = {
       template: path.resolve(__dirname, 'index.html'),
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new VueLoaderPlugin(),
     new BitorPlugin({
       root: process.cwd() + '/app',
       cachefile: '.classloader.js',
@@ -81,26 +79,19 @@ module.exports = {
     //   // path.resolve('../HashHistory'),
     //   // path.resolve('../HashHistory/node_modules'),
     // ],
-    extensions: ['.js', '.vue', '.json'],
-    alias: {
-      'vue': 'vue/dist/vue.js'
-    }
+    extensions: ['.js', '.jsx', '.json'],
   },
 
   module: {
     rules: [{
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         loader: "babel-loader",
         // cacheDirectory: true, // for faster rebuild
       },
       {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-      },
-      {
         test: /\.less$/,
-        use: ['vue-style-loader', 'css-loader', 'less-loader']
+        use: ['css-loader', 'less-loader']
       }
     ]
   }

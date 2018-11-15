@@ -1,10 +1,14 @@
 import 'reflect-metadata';
-import Vue from 'vue'
+// 1. 这两个导入时候，接收的成员名称，必须这么写
+import React from 'react' // 创建组件、虚拟dom元素，生命周期
+import {
+  render
+} from 'react-dom' // 把创建好的组件和虚拟dom放到页面上展示的
 import metakeys from './metakeys';
 import Application from '../../application/Application'
-import client from '../app';
+// import client from '../app';
 
-class VueApplication extends Application {
+class ReactApplication extends Application {
   constructor() {
     super()
     this.$vue = this.createVueRoot()
@@ -25,7 +29,7 @@ class VueApplication extends Application {
       console.log('middleware end')
     })
 
-    client(this);
+    // this.registerPlugin(client);
   }
 
   mountVue() {
@@ -34,29 +38,13 @@ class VueApplication extends Application {
 
   createVueRoot() {
 
-    return new Vue({
-      el: '#root',
-      data() {
-        return {
-          webview: null,
-          props: null
-        }
-      },
-      render: h => h({
-        name: 'webview-container',
-        render(h) {
-          if (Object.prototype.toString.call(this.$root.webview) === '[object String]') {
-            return h('span', this.$root.webview);
-          }
-          return h(this.$root.webview, {
-            props: this.$root.props
-          });
-        }
-      })
-    })
+    return render(() => {
+
+    }, document.getElementById('root'));
   }
 
-  start() {
+  start(client) {
+    this.registerPlugin(client)
     this.emit('ready');
     this.startServer()
     this.emit('after-server');
@@ -74,8 +62,10 @@ class VueApplication extends Application {
         let subroute = Reflect.getMetadata(cur, classname['prototype'], propertyName);
         if (subroute) {
           let path;
-          subroute.path = subroute.path === '/' ? '(/)?' : subroute.path;
+
           if (prefix.path && prefix.path.length > 1) { //:   prefix='/'
+            subroute.path = subroute.path === '/' ? '(/)?' : subroute.path;
+            subroute.path = subroute.path === '*' ? '(.*)' : subroute.path;
             path = `${prefix.path}${subroute.path}`
           } else {
             path = `${subroute.path}`
@@ -105,6 +95,12 @@ class VueApplication extends Application {
   registerDirective(name, option) {
     Vue.directive(name, option)
   }
+
+  registerPlugin(plugin) {
+    plugin(this);
+  }
 }
 
-new VueApplication().start()
+// new VueApplication().start()
+
+export default ReactApplication;
