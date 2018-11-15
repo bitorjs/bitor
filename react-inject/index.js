@@ -38,7 +38,7 @@ class ReactApplication extends Application {
 
   createVueRoot() {
 
-    return render(() => {
+    render(() => {
 
     }, document.getElementById('root'));
   }
