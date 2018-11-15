@@ -11,11 +11,15 @@ import Application from '../../application/Application'
 class ReactApplication extends Application {
   constructor() {
     super()
-    this.$vue = this.createVueRoot()
+
+    this.$react = {
+      webview: null,
+      props: null
+    }
 
     this.ctx.render = (webview, props) => {
-      this.$vue.webview = webview;
-      this.$vue.props = props;
+      this.$react.webview = webview;
+      this.$react.props = props;
     }
 
     this.use((ctx, next) => {
@@ -28,22 +32,18 @@ class ReactApplication extends Application {
     }).use(function (ctx, dispatch) {
       console.log('middleware end')
     })
-
-    // this.registerPlugin(client);
   }
 
-  mountVue() {
-    Vue.prototype.$bitor = this;
+  mountVue() {}
+
+  createVueRoot(rootElementId, rootComponent) {
+    let root = React.createElement(this.$react.webview, this.$react.props)
+    render(root, document.getElementById(rootElementId));
   }
 
-  createVueRoot() {
-
-    render(() => {
-
-    }, document.getElementById('root'));
-  }
-
-  start(client) {
+  start(client, rootElementId, rootComponent) {
+    rootElementId = rootElementId || "root"
+    this.createVueRoot(rootElementId, rootComponent)
     this.registerPlugin(client)
     this.emit('ready');
     this.startServer()
@@ -100,7 +100,5 @@ class ReactApplication extends Application {
     plugin(this);
   }
 }
-
-// new VueApplication().start()
 
 export default ReactApplication;
