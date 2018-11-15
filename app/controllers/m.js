@@ -1,6 +1,6 @@
 import D from '../../vue-inject/decorators';
 
-@D.namespace('/')
+@D.namespace('/m')
 class IndexController {
   constructor(ctx) {
     this.ctx = ctx;
@@ -8,12 +8,12 @@ class IndexController {
 
   @D.Get('/')
   index() {
-    this.ctx.render('Hello, boy')
+    this.ctx.render('Hello, mm and boy')
   }
 
   @D.Get('/bb')
   bb() {
-    this.ctx.render('Test, /bb')
+    this.ctx.render('Test, /bb m')
   }
 }
 

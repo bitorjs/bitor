@@ -7,7 +7,7 @@ var path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './vue-inject.js',
+  entry: './vue-inject/index.js',
   output: {
     filename: 'build.js',
     path: path.resolve(__dirname, 'dist'),
@@ -20,11 +20,12 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new VueLoaderPlugin(),
     new BitorPlugin({
-      root: process.cwd() + '/',
+      root: process.cwd() + '/app',
       cachefile: '.classloader.js',
       rules: {
-        // controller: "controller/**/*.js",
-        view: ['view/**/*.vue', 'view/**/*.js'],
+        components: ["components/**/*.vue"],
+        controllers: "controllers/**/*.js",
+        // view: ['view/**/*.vue', 'view/**/*.js'],
       },
       onAddCallback: function (ns, path) {
         console.log('add', ns, path)
@@ -48,14 +49,13 @@ module.exports = {
             const arr = data[p];
             arr.forEach(filepath => {
               import_packages += `import x_${count} from '${filepath}';\r\n`;
-              export_packages[p][`${p}_${path.basename(filepath, '.vue')}`] = `x_${count}`;
+              export_packages[p][`${p}_${path.basename(filepath).split('.')[0]}`] = `{x_${count}{`;
               ++count;
             });
           }
         }
 
-        return `${import_packages} \r\n\r\nexport default ${JSON.stringify(export_packages, null, 4)}`;
-        // return `module.exports = ${JSON.stringify(data,null, 4)}`;
+        return `${import_packages} \r\n\r\nexport default ${JSON.stringify(export_packages, null, 4).replace(/"{|{"/g,'')}`;
       }
     })
   ],

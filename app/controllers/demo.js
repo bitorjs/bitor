@@ -1,5 +1,4 @@
-import 'reflect-metadata';
-import D from "../../decorators";
+import D from "../../vue-inject/decorators";
 import App from '../view/index';
 import Empty from '../view/empty';
 import root from '../view/root';
@@ -40,7 +39,7 @@ class Controller {
   }
 
   debug() {
-    return this.bug();
+    return this.bug;
   }
 
 }
