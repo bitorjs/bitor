@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Application from '../application/Application'
 import Bootstrap from './app';
+import D from './decorators';
 
 const app = new Application()
 Bootstrap(app);
@@ -26,14 +27,17 @@ let root = new Vue({
   })
 })
 
+app.controller = (Controller) => {
+  D.routes(Controller, app)
+}
+
+
 app.ctx.render = (webview, props) => {
   root.webview = webview;
   root.props = props;
 }
 
 
-
-
-app.emit('before-server');
+app.emit('ready');
 app.startServer()
 app.emit('after-server');

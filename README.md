@@ -46,6 +46,7 @@ inline mode
 
 ### [babel-loader](https://www.npmjs.com/package/babel-loader)
 > [Babel7 + Webpack 4.x 踩坑](https://pdsuwwz.github.io/2018/09/29/webpack4-babel7/)
+> [Babel7](https://babeljs.io/docs/en/next/v7-migration)
 ```
 
 安装babel-loader、babel-core、babel-preset-env
@@ -230,4 +231,18 @@ const plugins = [
 ];
 
 module.exports = { presets, plugins };
+```
+
+```
+@babel/plugin-proposal-class-properties 箭头函数在class字段中直接绑定this
+@babel/plugin-transform-object-assign  Object.assign
+@babel/plugin-transform-proto-to-assign bar.__proto__ = {}
+@babel/runtime 避免编译输出中的重复
+@babel/preset-react 转换React JSX 语法
+Babel 7 
+1,stage-x插件的废弃
+2 es2015 插件 -> env 插件
+
+babel-upgrade
+这个工具的本质其实就是把之前的es2015换成env，stage-x换成各种proposal-xxx，并且加上了@babel作为新的Babel 7生态统一使用的scope。如果之前的项目使用了stage-x插件，就会多出大量的插件，其实这里面大部分插件都是无需使用的，你可以根据项目中用到的特性适当删减。
 ```

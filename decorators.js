@@ -1,11 +1,10 @@
 import 'reflect-metadata';
 
 const metakeys = ["namespace", "Get", "Post", "Delete", "Put", "Head"];
-let decorators = {}
+const decorators = {}
 metakeys.map(key => {
-  // console.log(key)
+
   decorators[key] = (path) => (target, name, descriptor) => {
-    // console.log(key, path, target, name, descriptor)
     Reflect.defineMetadata(key, {
       path,
       prototype: name,
@@ -21,21 +20,43 @@ function getRoutes(classname, app) {
 
   const ownPropertyNames = Object.getOwnPropertyNames(classname['prototype']);
   ownPropertyNames.forEach(propertyName => {
-    let curUrl = metakeys.reduce((ret, cur) => {
-      let r = Reflect.getMetadata(cur, classname['prototype'], propertyName);
-      console.log(r, classname.name)
-      if (r) {
-        let path = prefix.path ? `${prefix.path}${r.path}` : `${r.path}`
+    metakeys.reduce((ret, cur) => {
+      let subroute = Reflect.getMetadata(cur, classname['prototype'], propertyName);
+      if (subroute) {
+        let path;
+        if (prefix.path && prefix.path.length > 1) { //:   prefix='/'
+          path = `${prefix.path}${subroute.path}`
+        } else {
+          path = `${subroute.path}`
+        }
+
         app.$route.register(path, {
-          method: r.method.toLowerCase()
-        }, c[r.prototype].bind(c))
+          method: subroute.method.toLowerCase()
+        }, c[subroute.prototype].bind(c))
       }
     }, '')
-    // if (curUrl.length > 0)
-    // console.log(`${prefix}`);
   })
 }
 
 decorators['routes'] = getRoutes;
 
+
 export default decorators;
+
+
+
+// console.log(Reflect.getMetadata('Get', Controller.prototype, 'renderEmpty'))
+// console.log(Reflect.getMetadata('Get', Controller.prototype))
+// console.log('@@@@-----')
+
+
+// console.log(Reflect.getMetadata('namespace', Controller))
+
+// const keys = Object.getOwnPropertyNames(Controller.prototype);
+// console.log(keys)
+// keys.forEach(key => {
+//   console.log(Reflect.getMetadata('Get', Controller.prototype, key))
+// })
+// console.log('@@@@-----end')
+
+// console.log(Object.keys(Controller.prototype))
